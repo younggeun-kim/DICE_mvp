@@ -8,25 +8,29 @@ from django.http import JsonResponse
 import boto3
 import time
 
-def post_reqiest():
- import requests, json 
- tmpData = { "train" :  "True"} ,
- jsonData = json.dumps(tmpData) 
- header = {
-     'Content-type': "application/json"
- }
- print("POST")
- r = requests.post("http://15.164.17.5:8000/list/", data=jsonData, headers=header, verify=False)
+def post_reqiest(mode='1', url=""):
+    import requests, json 
+    if str(mode) == '1':
+        tmpData = { "mode" :  "train", "url": url} 
+    elif str(mode) == '2':
+        tmpData = { "mode" :  "infer", "url": url} 
+    jsonData = json.dumps(tmpData) 
+    header = {
+        'Content-type': "application/json"
+    }
+    print("POST")
+    r = requests.post("http://15.164.17.5:8000/list/", data=jsonData, headers=header, verify=False)
 
 
 @api_view(["GET", "POST"])
 def list_users(request):
     instance_id = 'i-00aae7b8f56ff4118'
-    print(request)
+    print("request", request.data)
     data = request.data .get('train')
-    print(data)
-    print(data==1)
-    if (data == 1):
+    url = request.data .get('url')
+    print("url", url)
+    print(str(data)=='1')
+    if data:
         ec2 = boto3.client('ec2',region_name='ap-northeast-2')
         response = ec2.describe_instances(InstanceIds=[
                     instance_id
@@ -45,7 +49,7 @@ def list_users(request):
             print(responses)
 
         time.sleep(10)
-        post_reqiest()
+        post_reqiest(str(data), url)
         time.sleep(10)
         """print("END")
         response = ec2.describe_instances(InstanceIds=[
