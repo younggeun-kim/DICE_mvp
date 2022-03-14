@@ -49,6 +49,16 @@ def list_users(request):
 
     return Response({'MESSAGE':'SUCCESS'}, status=201)
 
+#@api_view(['GET']) # 해당 함수 view에서 처리할 http 메소드
+#def HelloAPI(request):
+#    dummy = {
+#        'name': '죠르디',
+#        'type': '공룡',
+#        'job': '편의점알바생',
+#        'age': 5
+#    }
+#    return Response(dummy) # http response 형태로 return
+
 
 """def snippet_detail(request, pk):
     
