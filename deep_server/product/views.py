@@ -14,13 +14,17 @@ from .disasterr import test
 def list_users(request):
     instance_id = 'i-00aae7b8f56ff4118'
     print(request)
+    task = "1" #request.data['task']
+    if task == "1":
+        task_url = "https://8b7eef41-7fbb-440b-928a-a442878112a3.usrfiles.com/ugd/"
     data = request.data['mode']
+    url = task_url + request.data['url'].split("/")[3]
     print(data)
-    print(data=="train")
+    print("url", url)
     if data:
         time.sleep(10)
         if data == 'train':
-            main.run()
+            main.run(url=url)
             print("FINISH TRAIN")
         elif data == 'infer':
             ans = test.run_test()
@@ -31,13 +35,13 @@ def list_users(request):
                 ],)
         state = response['Reservations'][0]['Instances'][0]['State']['Name']
         print(state)
-        if state == "running":
+        """if state == "running":
             responses = ec2.stop_instances(
                     InstanceIds=[
                         instance_id
                     ],
                 )
-            print(responses)
+            print(responses)"""
 
         print("TERMINATE")
         #responses = ec2.stop_instances(

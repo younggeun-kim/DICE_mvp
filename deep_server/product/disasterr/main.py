@@ -26,7 +26,7 @@ from transformers import get_linear_schedule_with_warmup
 
 
 #Parmeters and Settings#
-def run():
+def run(url):
     num_Epochs = 1
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     path='/home/ec2-user/yuddomack/product/disasterr/'
@@ -42,7 +42,9 @@ def run():
 
 
     print("PATH", path)
-    train_csv = pd.read_csv(os.path.join(path+'train.csv'), keep_default_na = False)
+    #train_csv = pd.read_csv(os.path.join(path+'train.csv'), keep_default_na = False)
+    train_csv = pd.read_csv(url, keep_default_na = False)
+    print(train_csv.head())
     if shuffle_train_data :
         train_csv = train_csv.sample(frac=1).reset_index(drop=True)
     num_of_train=round(percent_of_train*(len(train_csv)))
